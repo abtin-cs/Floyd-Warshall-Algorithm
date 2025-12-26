@@ -1,1 +1,31 @@
+#include <iostream>
+using namespace std;
+
+#define INF 1000000
+
+// چاپ ماتریس فاصله
+void printMatrix(int **dist, int V) {
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (dist[i][j] == INF)
+                cout << "INF ";
+            else
+                cout << dist[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// چاپ مسیر واقعی از u به v
+void printPath(int u, int v, int **next) {
+    if (next[u][v] == -1) {
+        cout << "No path";
+        return;
+    }
+    cout << u;
+    while (u != v) {
+        u = next[u][v];
+        cout << " -> " << u;
+    }
+}
 
