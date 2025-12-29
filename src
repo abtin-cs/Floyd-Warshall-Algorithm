@@ -28,4 +28,74 @@ void printPath(int u, int v, int **next) {
         cout << " -> " << u;
     }
 }
+int main() {
+    int V;
+    cout << "Enter number of vertices: ";
+    cin >> V;
 
+    int **dist = new int*[V];
+    int **next = new int*[V];
+
+    for (int i = 0; i < V; i++) {
+        dist[i] = new int[V];
+        next[i] = new int[V];
+    }
+
+    cout << "Enter adjacency matrix (-1 means no edge):\n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            int x;
+            cin >> x;
+
+            if (x == -1) {
+                dist[i][j] = INF;
+                next[i][j] = -1;
+            } else {
+                dist[i][j] = x;
+                if (i != j)
+                    next[i][j] = j;
+                else
+                    next[i][j] = i;
+            }
+        }
+    }
+
+    // الگوریتم Floyd–Warshall + Path Reconstruction
+    for (int k = 0; k < V; k++) {
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][k] != INF && dist[k][j] != INF &&
+                    dist[i][k] + dist[k][j] < dist[i][j]) {
+
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                    next[i][j] = next[i][k];
+                }
+            }
+        }
+    }
+
+    cout << "\nShortest distance matrix:\n";
+    printMatrix(dist, V);
+
+    // نمایش مسیرها
+    cout << "\nPaths between vertices:\n";
+    for (int i = 0; i < V; i++) {
+        for (int j = 0; j < V; j++) {
+            if (i != j) {
+                cout << "Path from " << i << " to " << j << ": ";
+                printPath(i, j, next);
+                cout << endl;
+            }
+        }
+    }
+
+    // آزادسازی حافظه
+    for (int i = 0; i < V; i++) {
+        delete[] dist[i];
+        delete[] next[i];
+    }
+    delete[] dist;
+    delete[] next;
+
+    return 0;
+}
