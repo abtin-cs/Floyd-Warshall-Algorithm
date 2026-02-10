@@ -16,7 +16,7 @@ void printMatrix(int **dist, int V) {
     }
 }
 
-// Print the actual path from u to v
+// Print the actual path from u to v.
 
 void printPath(int u, int v, int **next) {
     if (next[u][v] == -1) {
